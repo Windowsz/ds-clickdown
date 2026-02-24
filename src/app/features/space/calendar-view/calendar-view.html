@@ -1,0 +1,42 @@
+<div class="calendar-view">
+  <!-- Calendar Header -->
+  <div class="cal-header">
+    <div class="cal-nav">
+      <button mat-icon-button (click)="prevMonth()" matTooltip="Previous month">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h2 class="cal-title">{{ monthYear() }}</h2>
+      <button mat-icon-button (click)="nextMonth()" matTooltip="Next month">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+    <button mat-stroked-button class="today-btn" (click)="today()">Today</button>
+  </div>
+
+  <!-- Week days header -->
+  <div class="weekdays">
+    @for (day of weekDays; track day) {
+      <div class="weekday">{{ day }}</div>
+    }
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="cal-grid">
+    @for (day of calendarDays(); track day.date.getTime()) {
+      <div class="cal-day" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
+        <span class="day-num" [class.today-num]="day.isToday">{{ day.date.getDate() }}</span>
+
+        <div class="day-tasks">
+          @for (task of day.tasks.slice(0, 3); track task.id) {
+            <div class="cal-task" (click)="openTask(task.id, $event)" [style.background]="task.status.color + '22'" [style.border-left]="'3px solid ' + task.status.color" [matTooltip]="task.name">
+              <span>{{ task.name }}</span>
+            </div>
+          }
+          @if (day.tasks.length > 3) {
+            <div class="more-tasks">+{{ day.tasks.length - 3 }} more</div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

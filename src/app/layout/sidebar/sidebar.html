@@ -1,0 +1,186 @@
+<aside class="sidebar" [class.collapsed]="ws.sidebarCollapsed()">
+  <!-- Workspace Header -->
+  <div class="workspace-header">
+    <div class="workspace-info" [matMenuTriggerFor]="wsMenu">
+      <div class="workspace-avatar" [style.background]="ws.workspace().color">
+        {{ ws.workspace().name.charAt(0) }}
+      </div>
+      @if (!ws.sidebarCollapsed()) {
+        <div class="workspace-meta">
+          <span class="workspace-name">{{ ws.workspace().name }}</span>
+          <span class="workspace-plan">{{ ws.workspace().plan | titlecase }}</span>
+        </div>
+        <mat-icon class="expand-icon">unfold_more</mat-icon>
+      }
+    </div>
+
+    @if (!ws.sidebarCollapsed()) {
+      <div class="workspace-actions">
+        <button mat-icon-button class="action-btn" matTooltip="Notifications">
+          <mat-icon [matBadge]="ws.unreadCount() || null" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+        </button>
+        <button mat-icon-button class="action-btn" matTooltip="New task" [routerLink]="['/home']">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Search -->
+  @if (!ws.sidebarCollapsed()) {
+    <div class="sidebar-search" [routerLink]="['/home']">
+      <mat-icon class="search-icon">search</mat-icon>
+      <span class="search-placeholder">Search...</span>
+      <span class="search-shortcut">⌘K</span>
+    </div>
+  }
+
+  <!-- Primary Nav -->
+  <nav class="sidebar-nav">
+    @if (!ws.sidebarCollapsed()) {
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </a>
+      <a routerLink="/inbox" routerLinkActive="active" class="nav-item">
+        <mat-icon>inbox</mat-icon>
+        <span>Inbox</span>
+        @if (ws.unreadCount() > 0) {
+          <span class="nav-badge">{{ ws.unreadCount() }}</span>
+        }
+      </a>
+      <a routerLink="/my-work" routerLinkActive="active" class="nav-item">
+        <mat-icon>task_alt</mat-icon>
+        <span>My Work</span>
+      </a>
+      <div class="nav-item">
+        <mat-icon>bar_chart</mat-icon>
+        <span>Dashboards</span>
+      </div>
+      <div class="nav-item">
+        <mat-icon>flag</mat-icon>
+        <span>Goals</span>
+      </div>
+    } @else {
+      <a routerLink="/home" routerLinkActive="active" class="nav-item icon-only" matTooltip="Home" matTooltipPosition="right">
+        <mat-icon>home</mat-icon>
+      </a>
+      <a routerLink="/inbox" routerLinkActive="active" class="nav-item icon-only" matTooltip="Inbox" matTooltipPosition="right">
+        <mat-icon>inbox</mat-icon>
+      </a>
+      <a routerLink="/my-work" routerLinkActive="active" class="nav-item icon-only" matTooltip="My Work" matTooltipPosition="right">
+        <mat-icon>task_alt</mat-icon>
+      </a>
+    }
+  </nav>
+
+  <!-- Spaces Section -->
+  @if (!ws.sidebarCollapsed()) {
+    <div class="spaces-section">
+      <div class="spaces-header">
+        <span>Spaces</span>
+        <button mat-icon-button class="spaces-add-btn" matTooltip="Create space">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      @for (space of ws.spaces(); track space.id) {
+        <div class="space-item">
+          <!-- Space Row -->
+          <div class="space-row" [class.active]="ws.activeSpaceId() === space.id" (click)="navigateSpace(space.id)">
+            <button class="collapse-btn" (click)="$event.stopPropagation(); ws.toggleSpaceCollapsed(space.id)">
+              <mat-icon class="collapse-icon" [class.rotated]="!space.collapsed">chevron_right</mat-icon>
+            </button>
+            <div class="space-icon" [style.background]="space.color">
+              <mat-icon>{{ space.icon || 'circle' }}</mat-icon>
+            </div>
+            <span class="space-name">{{ space.name }}</span>
+            <div class="space-actions" (click)="$event.stopPropagation()">
+              <mat-icon class="space-action-icon">more_horiz</mat-icon>
+              <mat-icon class="space-action-icon">add</mat-icon>
+            </div>
+          </div>
+
+          <!-- Space Contents -->
+          @if (!space.collapsed) {
+            <div class="space-contents animate-fade-in">
+              <!-- Folders -->
+              @for (folder of space.folders; track folder.id) {
+                <div class="folder-item">
+                  <div class="folder-row" (click)="ws.toggleFolderCollapsed(space.id, folder.id)">
+                    <mat-icon class="folder-collapse" [class.rotated]="!folder.collapsed">chevron_right</mat-icon>
+                    <mat-icon class="folder-icon">folder</mat-icon>
+                    <span class="folder-name">{{ folder.name }}</span>
+                    <div class="folder-actions">
+                      <mat-icon class="folder-action-icon">more_horiz</mat-icon>
+                    </div>
+                  </div>
+
+                  @if (!folder.collapsed) {
+                    <div class="folder-lists">
+                      @for (list of folder.lists; track list.id) {
+                        <div class="list-item" [class.active]="ws.activeListId() === list.id" (click)="navigate(list.id, space.id)">
+                          <div class="list-dot" [style.background]="list.color"></div>
+                          <span class="list-name">{{ list.name }}</span>
+                          <span class="list-count">{{ list.tasks.length }}</span>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+
+              <!-- Space Lists (no folder) -->
+              @for (list of space.lists; track list.id) {
+                <div class="list-item" [class.active]="ws.activeListId() === list.id" (click)="navigate(list.id, space.id)">
+                  <div class="list-dot" [style.background]="list.color"></div>
+                  <span class="list-name">{{ list.name }}</span>
+                  <span class="list-count">{{ list.tasks.length }}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="sidebar-bottom">
+      <div class="nav-item bottom-item">
+        <mat-icon>delete_outline</mat-icon>
+        <span>Trash</span>
+      </div>
+      <div class="nav-item bottom-item">
+        <mat-icon>help_outline</mat-icon>
+        <span>Help & Docs</span>
+      </div>
+    </div>
+  }
+
+  <!-- Collapse Toggle -->
+  <button class="collapse-toggle" (click)="ws.toggleSidebar()" [matTooltip]="ws.sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'" matTooltipPosition="right">
+    <mat-icon>{{ ws.sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+  </button>
+</aside>
+
+<!-- Workspace Switcher Menu -->
+<mat-menu #wsMenu="matMenu" class="workspace-menu">
+  <div class="ws-menu-header" mat-menu-item disabled>
+    <span>{{ ws.workspace().name }}</span>
+    <span class="ws-plan">{{ ws.workspace().plan | titlecase }} Plan</span>
+  </div>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    Workspace Settings
+  </button>
+  <button mat-menu-item>
+    <mat-icon>people</mat-icon>
+    Invite Members
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>add_circle</mat-icon>
+    Create Workspace
+  </button>
+</mat-menu>

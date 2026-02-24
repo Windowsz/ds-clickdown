@@ -1,0 +1,103 @@
+@if (list()) {
+  <div class="board-view">
+    @for (col of columns(); track col.status.id) {
+      <div class="board-column">
+        <!-- Column Header -->
+        <div class="col-header">
+          <div class="col-status-dot" [style.background]="col.status.color"></div>
+          <span class="col-name" [style.color]="col.status.color">{{ col.status.name }}</span>
+          <span class="col-count">{{ col.tasks.length }}</span>
+          <div class="col-actions">
+            <button mat-icon-button class="col-action-btn" matTooltip="More options">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <button mat-icon-button class="col-action-btn" matTooltip="Add task">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="col-tasks">
+          @for (task of col.tasks; track task.id) {
+            <div class="board-card" (click)="openTask(task.id)">
+              <!-- Tags -->
+              @if (task.tags.length > 0) {
+                <div class="card-tags">
+                  @for (tag of task.tags.slice(0, 2); track tag.id) {
+                    <span class="card-tag" [style.background]="tag.color + '22'" [style.color]="tag.color">{{ tag.name }}</span>
+                  }
+                </div>
+              }
+
+              <!-- Task Name -->
+              <p class="card-name">{{ task.name }}</p>
+
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <!-- Priority -->
+                <div class="card-priority" [style.color]="PRIORITY_CONFIG[task.priority].color" [matTooltip]="'Priority: ' + PRIORITY_CONFIG[task.priority].label">
+                  <mat-icon>{{ PRIORITY_CONFIG[task.priority].icon }}</mat-icon>
+                </div>
+
+                <!-- Due Date -->
+                @if (task.dueDate) {
+                  <div class="card-due" [class.overdue]="isOverdue(task)">
+                    <mat-icon>{{ isOverdue(task) ? 'warning' : 'today' }}</mat-icon>
+                    <span>{{ task.dueDate | date:'MMM d' }}</span>
+                  </div>
+                }
+
+                <!-- Subtasks -->
+                @if (task.subtasks.length > 0) {
+                  <div class="card-subtasks">
+                    <mat-icon>checklist</mat-icon>
+                    <span>{{ completedSubtasks(task) }}/{{ task.subtasks.length }}</span>
+                  </div>
+                }
+
+                <!-- Spacer -->
+                <div class="card-spacer"></div>
+
+                <!-- Assignees -->
+                <div class="card-assignees">
+                  @if (task.assignees.length > 0) {
+                    @for (a of task.assignees.slice(0, 3); track a.id) {
+                      <div class="card-avatar" [style.background]="a.color" [matTooltip]="a.name">{{ a.initials }}</div>
+                    }
+                    @if (task.assignees.length > 3) {
+                      <div class="card-avatar more">+{{ task.assignees.length - 3 }}</div>
+                    }
+                  } @else {
+                    <div class="card-avatar unassigned" matTooltip="Unassigned">
+                      <mat-icon>person</mat-icon>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Add card button -->
+          <button class="add-card-btn">
+            <mat-icon>add</mat-icon>
+            Add task
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Add Column -->
+    <div class="add-column">
+      <button class="add-col-btn">
+        <mat-icon>add</mat-icon>
+        Add status
+      </button>
+    </div>
+  </div>
+} @else {
+  <div class="no-list">
+    <mat-icon>view_kanban</mat-icon>
+    <h2>Select a list from the sidebar</h2>
+  </div>
+}

@@ -1,0 +1,132 @@
+.calendar-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 16px 20px;
+}
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2C2C2C;
+  margin: 0;
+  min-width: 200px;
+  text-align: center;
+}
+
+.today-btn {
+  height: 32px !important;
+  font-size: 12px !important;
+  border-color: #E9EAEC !important;
+  color: #6B6B6B !important;
+
+  &:hover { border-color: #7B68EE !important; color: #7B68EE !important; }
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #E9EAEC;
+  margin-bottom: 4px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9E9E9E;
+  padding: 8px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  flex: 1;
+  border-left: 1px solid #E9EAEC;
+  border-top: 1px solid #E9EAEC;
+}
+
+.cal-day {
+  border-right: 1px solid #E9EAEC;
+  border-bottom: 1px solid #E9EAEC;
+  padding: 6px;
+  min-height: 100px;
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover { background: #F8F8FF; }
+
+  &.other-month {
+    background: #FAFAFA;
+    .day-num { color: #D0D0D0; }
+  }
+
+  &.today {
+    background: #F0EFFE;
+  }
+}
+
+.day-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 13px;
+  color: #6B6B6B;
+  font-weight: 500;
+  border-radius: 50%;
+  margin-bottom: 4px;
+
+  &.today-num {
+    background: #7B68EE;
+    color: white;
+    font-weight: 700;
+  }
+}
+
+.day-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cal-task {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: #2C2C2C;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: opacity 0.1s;
+
+  &:hover { opacity: 0.8; }
+}
+
+.more-tasks {
+  font-size: 10px;
+  color: #9E9E9E;
+  padding: 1px 4px;
+  cursor: pointer;
+
+  &:hover { color: #7B68EE; }
+}

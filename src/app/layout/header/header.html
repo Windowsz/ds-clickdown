@@ -1,0 +1,121 @@
+<header class="app-header">
+  <!-- Left: Breadcrumb & List name -->
+  <div class="header-left">
+    @if (ws.activeListId()) {
+      @let list = ws.getListById(ws.activeListId()!);
+      @if (list) {
+        <div class="breadcrumb">
+          <span class="breadcrumb-space">{{ ws.getSpaceById(list.spaceId)?.name }}</span>
+          <mat-icon class="breadcrumb-sep">chevron_right</mat-icon>
+          <span class="breadcrumb-list">
+            <span class="list-dot-sm" [style.background]="list.color"></span>
+            {{ list.name }}
+          </span>
+        </div>
+      }
+    } @else {
+      <div class="breadcrumb">
+        <span class="breadcrumb-space">ClickDown</span>
+      </div>
+    }
+  </div>
+
+  <!-- Center: View switcher (only on list/space views) -->
+  @if (ws.activeListId()) {
+    <div class="view-switcher">
+      @for (view of views; track view.id) {
+        <button class="view-btn" [class.active]="ws.activeView() === view.id" (click)="setView(view.id)" [matTooltip]="view.label">
+          <mat-icon>{{ view.icon }}</mat-icon>
+          <span>{{ view.label }}</span>
+        </button>
+      }
+
+      <div class="view-divider"></div>
+
+      <button class="view-btn-icon" matTooltip="Filter">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button class="view-btn-icon" matTooltip="Group by">
+        <mat-icon>group_work</mat-icon>
+      </button>
+      <button class="view-btn-icon" matTooltip="Sort">
+        <mat-icon>sort</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Right: User actions -->
+  <div class="header-right">
+    <button mat-icon-button class="header-action" matTooltip="Search" [routerLink]="['/home']">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <button mat-icon-button class="header-action" matTooltip="Notifications" [matMenuTriggerFor]="notifMenu">
+      @if (ws.unreadCount() > 0) {
+        <mat-icon [matBadge]="ws.unreadCount()" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+      } @else {
+        <mat-icon>notifications_none</mat-icon>
+      }
+    </button>
+
+    <button mat-icon-button class="header-action" matTooltip="Apps">
+      <mat-icon>apps</mat-icon>
+    </button>
+
+    <!-- User avatar -->
+    <div class="user-avatar" [style.background]="ws.currentUser().color" [matMenuTriggerFor]="userMenu" matTooltip="{{ ws.currentUser().name }}">
+      <span>{{ ws.currentUser().initials }}</span>
+      <div class="online-indicator"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Notifications Menu -->
+<mat-menu #notifMenu="matMenu" class="notif-menu" xPosition="before">
+  <div class="notif-header" (click)="$event.stopPropagation()">
+    <span>Notifications</span>
+    <button mat-button class="mark-all-btn" (click)="ws.markAllNotificationsRead()">Mark all read</button>
+  </div>
+  <mat-divider></mat-divider>
+  @for (notif of ws.notifications(); track notif.id) {
+    <div class="notif-item" [class.unread]="!notif.read" mat-menu-item (click)="ws.markNotificationRead(notif.id)">
+      <div class="notif-avatar" [style.background]="notif.user.color">{{ notif.user.initials }}</div>
+      <div class="notif-content">
+        <p class="notif-message">{{ notif.message }}</p>
+        <span class="notif-time">{{ notif.createdAt | date:'shortTime' }}</span>
+      </div>
+      @if (!notif.read) {
+        <div class="notif-dot"></div>
+      }
+    </div>
+  }
+</mat-menu>
+
+<!-- User Menu -->
+<mat-menu #userMenu="matMenu" xPosition="before">
+  <div class="user-menu-header" mat-menu-item disabled>
+    <div class="user-menu-avatar" [style.background]="ws.currentUser().color">{{ ws.currentUser().initials }}</div>
+    <div>
+      <div class="user-menu-name">{{ ws.currentUser().name }}</div>
+      <div class="user-menu-email">{{ ws.currentUser().email }}</div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    My Profile
+  </button>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    Settings
+  </button>
+  <button mat-menu-item>
+    <mat-icon>keyboard</mat-icon>
+    Keyboard Shortcuts
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    Log Out
+  </button>
+</mat-menu>

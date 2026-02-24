@@ -1,0 +1,164 @@
+@if (list()) {
+  <div class="list-view">
+    <!-- List Header -->
+    <div class="list-header">
+      <div class="list-title">
+        <div class="list-color-dot" [style.background]="list()!.color"></div>
+        <h1>{{ list()!.name }}</h1>
+        <span class="task-count-badge">{{ list()!.tasks.length }}</span>
+      </div>
+      <div class="list-actions">
+        <button mat-stroked-button class="action-btn-sm" (click)="startAddTask()">
+          <mat-icon>add</mat-icon>
+          Add task
+        </button>
+        <button mat-icon-button matTooltip="Share">
+          <mat-icon>share</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="More options">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Column Headers -->
+    <div class="column-headers">
+      <div class="col-task-name">Task name</div>
+      <div class="col-assignee">Assignee</div>
+      <div class="col-due">Due date</div>
+      <div class="col-priority">Priority</div>
+      <div class="col-status">Status</div>
+      <div class="col-tags">Tags</div>
+    </div>
+
+    <!-- Task Groups by Status -->
+    @for (group of tasksByStatus(); track group.status.id) {
+      <div class="status-group">
+        <!-- Group Header -->
+        <div class="group-header" (click)="toggleGroup(group.status.id)">
+          <mat-icon class="group-collapse" [class.rotated]="isGroupExpanded(group.status.id)">
+            chevron_right
+          </mat-icon>
+          <div class="status-pill" [style.background]="group.status.color">
+            {{ group.status.name }}
+          </div>
+          <span class="group-count">{{ group.tasks.length }}</span>
+        </div>
+
+        <!-- Tasks -->
+        @if (isGroupExpanded(group.status.id)) {
+          <div class="group-tasks">
+            @for (task of group.tasks; track task.id) {
+              <div class="task-row" [class.done]="task.status.type === 'done'" (click)="openTask(task.id)">
+                <!-- Checkbox -->
+                <div class="task-check" (click)="markDone(task, $event)">
+                  <div class="check-circle" [class.checked]="task.status.type === 'done'" [style.border-color]="task.status.color" [style.background]="task.status.type === 'done' ? task.status.color : 'transparent'">
+                    @if (task.status.type === 'done') {
+                      <mat-icon>check</mat-icon>
+                    }
+                  </div>
+                </div>
+
+                <!-- Task Name -->
+                <div class="col-task-name task-name-cell">
+                  <span class="task-name" [class.strikethrough]="task.status.type === 'done'">{{ task.name }}</span>
+                  @if (task.subtasks.length > 0) {
+                    <span class="subtask-count">{{ completedSubtasks(task) }}/{{ task.subtasks.length }}</span>
+                  }
+                  @if (task.comments.length > 0) {
+                    <div class="task-comments-icon">
+                      <mat-icon>chat_bubble_outline</mat-icon>
+                      <span>{{ task.comments.length }}</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Assignees -->
+                <div class="col-assignee assignee-cell">
+                  @if (task.assignees.length > 0) {
+                    <div class="assignee-avatars">
+                      @for (a of task.assignees.slice(0, 3); track a.id) {
+                        <div class="assignee-avatar" [style.background]="a.color" [matTooltip]="a.name">{{ a.initials }}</div>
+                      }
+                      @if (task.assignees.length > 3) {
+                        <div class="assignee-avatar more">+{{ task.assignees.length - 3 }}</div>
+                      }
+                    </div>
+                  } @else {
+                    <div class="unassigned-btn" matTooltip="Assign">
+                      <mat-icon>person_add</mat-icon>
+                    </div>
+                  }
+                </div>
+
+                <!-- Due Date -->
+                <div class="col-due due-cell" [class.overdue]="isOverdue(task)">
+                  @if (task.dueDate) {
+                    <mat-icon class="due-icon">{{ isOverdue(task) ? 'warning' : 'today' }}</mat-icon>
+                    <span>{{ task.dueDate | date:'MMM d' }}</span>
+                  } @else {
+                    <span class="no-due">—</span>
+                  }
+                </div>
+
+                <!-- Priority -->
+                <div class="col-priority priority-cell">
+                  <div class="priority-badge" [style.color]="PRIORITY_CONFIG[task.priority].color" [matTooltip]="PRIORITY_CONFIG[task.priority].label">
+                    <mat-icon>{{ PRIORITY_CONFIG[task.priority].icon }}</mat-icon>
+                    <span>{{ PRIORITY_CONFIG[task.priority].label }}</span>
+                  </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-status status-cell">
+                  <div class="status-badge" [style.background]="task.status.color + '22'" [style.color]="task.status.color">
+                    {{ task.status.name }}
+                  </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="col-tags tags-cell">
+                  @for (tag of task.tags.slice(0, 2); track tag.id) {
+                    <span class="tag-chip" [style.background]="tag.color + '22'" [style.color]="tag.color">{{ tag.name }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Add task row -->
+            @if (addingTask()) {
+              <div class="add-task-row">
+                <div class="check-circle empty"></div>
+                <input
+                  class="add-task-input"
+                  placeholder="Task name"
+                  [value]="newTaskName()"
+                  (input)="newTaskName.set($any($event.target).value)"
+                  (keydown.enter)="submitNewTask()"
+                  (keydown.escape)="cancelAddTask()"
+                  autofocus
+                />
+                <div class="add-task-actions">
+                  <button mat-flat-button color="primary" (click)="submitNewTask()" [disabled]="!newTaskName().trim()">Save</button>
+                  <button mat-button (click)="cancelAddTask()">Cancel</button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Add Task button for each group -->
+        <button class="add-task-btn" (click)="startAddTask()">
+          <mat-icon>add</mat-icon>
+          Add task
+        </button>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="no-list">
+    <mat-icon>list_alt</mat-icon>
+    <h2>Select a list from the sidebar</h2>
+    <p>Choose a space or list to view tasks</p>
+  </div>
+}
