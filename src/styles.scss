@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$cyan-palette,
+    ),
+    typography: Roboto,
+    density: -1,
+  ));
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  background-color: #F5F6F8;
+  color: #2C2C2C;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+// Scrollbars
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b0b0b0; }
+
+// Material overrides
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button, .mat-mdc-flat-button {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  border-radius: 6px !important;
+}
+
+.mat-mdc-icon-button { border-radius: 6px !important; }
+
+.mat-mdc-menu-panel {
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+  border: 1px solid #E9EAEC !important;
+  min-width: 180px !important;
+}
+
+.mat-mdc-menu-item {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  min-height: 36px !important;
+}
+
+.mat-mdc-tooltip { font-size: 12px !important; }
+
+.mat-mdc-tab-label-container { font-family: 'Inter', sans-serif !important; }
+
+.mat-mdc-tab .mdc-tab__text-label { font-family: 'Inter', sans-serif !important; font-size: 13px !important; }
+
+.mat-mdc-dialog-container { border-radius: 12px !important; }
+
+// Priority badge classes
+.priority-urgent { color: #FF4444; }
+.priority-high { color: #FF8C00; }
+.priority-normal { color: #0099FF; }
+.priority-low { color: #9E9E9E; }

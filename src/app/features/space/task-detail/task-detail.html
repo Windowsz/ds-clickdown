@@ -1,0 +1,271 @@
+@if (task()) {
+  <div class="task-detail-panel">
+    <!-- Panel Header -->
+    <div class="detail-header">
+      <div class="header-left">
+        <div class="task-status-inline" [matMenuTriggerFor]="statusMenu" [style.background]="task()!.status.color + '22'" [style.color]="task()!.status.color">
+          <span>{{ task()!.status.name }}</span>
+          <mat-icon>expand_more</mat-icon>
+        </div>
+        <button mat-icon-button class="detail-action" matTooltip="Mark done">
+          <mat-icon>check_circle_outline</mat-icon>
+        </button>
+      </div>
+      <div class="header-right">
+        <button mat-icon-button class="detail-action" matTooltip="More options">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <button mat-icon-button class="detail-action close-btn" matTooltip="Close" (click)="close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Task Name -->
+    <div class="task-name-section">
+      @if (editingName()) {
+        <input
+          class="task-name-edit"
+          [value]="editedName()"
+          (input)="editedName.set($any($event.target).value)"
+          (keydown.enter)="saveEditName()"
+          (keydown.escape)="editingName.set(false)"
+          (blur)="saveEditName()"
+          autofocus
+        />
+      } @else {
+        <h1 class="task-name-display" (click)="startEditName()">{{ task()!.name }}</h1>
+      }
+    </div>
+
+    <!-- Task Meta Grid -->
+    <div class="task-meta-grid">
+      <!-- Assignees -->
+      <div class="meta-row">
+        <div class="meta-label">
+          <mat-icon>person</mat-icon>
+          <span>Assignees</span>
+        </div>
+        <div class="meta-value">
+          @if (task()!.assignees.length > 0) {
+            <div class="assignee-row">
+              @for (a of task()!.assignees; track a.id) {
+                <div class="detail-avatar" [style.background]="a.color" [matTooltip]="a.name">{{ a.initials }}</div>
+              }
+            </div>
+          } @else {
+            <span class="meta-empty">Add assignee</span>
+          }
+        </div>
+      </div>
+
+      <!-- Priority -->
+      <div class="meta-row">
+        <div class="meta-label">
+          <mat-icon>flag</mat-icon>
+          <span>Priority</span>
+        </div>
+        <div class="meta-value" [matMenuTriggerFor]="priorityMenu">
+          <div class="priority-display" [style.color]="PRIORITY_CONFIG[task()!.priority].color">
+            <mat-icon>{{ PRIORITY_CONFIG[task()!.priority].icon }}</mat-icon>
+            <span>{{ PRIORITY_CONFIG[task()!.priority].label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Due Date -->
+      <div class="meta-row">
+        <div class="meta-label">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Due date</span>
+        </div>
+        <div class="meta-value">
+          @if (task()!.dueDate) {
+            <span class="due-date-display">{{ task()!.dueDate | date:'MMM d, yyyy' }}</span>
+          } @else {
+            <span class="meta-empty">Add due date</span>
+          }
+        </div>
+      </div>
+
+      <!-- Tags -->
+      @if (task()!.tags.length > 0) {
+        <div class="meta-row">
+          <div class="meta-label">
+            <mat-icon>label</mat-icon>
+            <span>Tags</span>
+          </div>
+          <div class="meta-value">
+            <div class="tags-row">
+              @for (tag of task()!.tags; track tag.id) {
+                <span class="tag-badge" [style.background]="tag.color + '22'" [style.color]="tag.color">{{ tag.name }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Description -->
+    <div class="detail-section">
+      <div class="section-label">
+        <mat-icon>notes</mat-icon>
+        <span>Description</span>
+      </div>
+      <div class="description-area">
+        @if (task()!.description) {
+          <p class="description-text">{{ task()!.description }}</p>
+        } @else {
+          <p class="description-placeholder">Add a description...</p>
+        }
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="detail-tabs">
+      <button class="tab-btn" [class.active]="activeTab() === 'subtasks'" (click)="activeTab.set('subtasks')">
+        <mat-icon>checklist</mat-icon>
+        Subtasks
+        @if (task()!.subtasks.length > 0) {
+          <span class="tab-count">{{ getSubtaskProgress() }}%</span>
+        }
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'comments'" (click)="activeTab.set('comments')">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        Comments
+        @if (task()!.comments.length > 0) {
+          <span class="tab-count">{{ task()!.comments.length }}</span>
+        }
+      </button>
+      <button class="tab-btn" [class.active]="activeTab() === 'activity'" (click)="activeTab.set('activity')">
+        <mat-icon>history</mat-icon>
+        Activity
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Subtasks Tab -->
+      @if (activeTab() === 'subtasks') {
+        <div class="subtasks-section">
+          @if (task()!.subtasks.length > 0) {
+            <!-- Progress -->
+            <div class="subtask-progress">
+              <span class="progress-label">{{ getSubtaskProgress() }}%</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getSubtaskProgress()"></div>
+              </div>
+            </div>
+
+            @for (subtask of task()!.subtasks; track subtask.id) {
+              <div class="subtask-item" [class.done]="subtask.completed" (click)="toggleSubtask(subtask.id)">
+                <div class="subtask-check" [class.checked]="subtask.completed">
+                  @if (subtask.completed) {
+                    <mat-icon>check</mat-icon>
+                  }
+                </div>
+                <span class="subtask-name">{{ subtask.name }}</span>
+              </div>
+            }
+          }
+
+          <!-- Add Subtask -->
+          <div class="add-subtask">
+            <input
+              class="subtask-input"
+              placeholder="Add a subtask..."
+              [value]="newSubtaskName()"
+              (input)="newSubtaskName.set($any($event.target).value)"
+              (keydown.enter)="addSubtask()"
+            />
+            @if (newSubtaskName().trim()) {
+              <button mat-icon-button class="subtask-add-btn" (click)="addSubtask()">
+                <mat-icon>add</mat-icon>
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Comments Tab -->
+      @if (activeTab() === 'comments') {
+        <div class="comments-section">
+          @for (comment of task()!.comments; track comment.id) {
+            <div class="comment-item">
+              <div class="comment-avatar" [style.background]="comment.author.color">{{ comment.author.initials }}</div>
+              <div class="comment-body">
+                <div class="comment-header">
+                  <span class="comment-author">{{ comment.author.name }}</span>
+                  <span class="comment-time">{{ comment.createdAt | date:'MMM d, shortTime' }}</span>
+                </div>
+                <p class="comment-text">{{ comment.text }}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Add Comment -->
+          <div class="add-comment">
+            <div class="comment-input-avatar" [style.background]="ws.currentUser().color">{{ ws.currentUser().initials }}</div>
+            <div class="comment-input-wrap">
+              <textarea
+                class="comment-textarea"
+                placeholder="Add a comment..."
+                rows="2"
+                [value]="newComment()"
+                (input)="newComment.set($any($event.target).value)"
+              ></textarea>
+              @if (newComment().trim()) {
+                <div class="comment-actions">
+                  <button mat-flat-button color="primary" (click)="submitComment()" style="height: 28px; font-size: 12px;">Post</button>
+                  <button mat-button (click)="newComment.set('')" style="height: 28px; font-size: 12px;">Cancel</button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Activity Tab -->
+      @if (activeTab() === 'activity') {
+        <div class="activity-section">
+          <div class="activity-item-detail">
+            <div class="activity-line"></div>
+            <div class="activity-dot"></div>
+            <p class="activity-text">Task created by <strong>{{ ws.currentUser().name }}</strong></p>
+            <span class="activity-time">{{ task()!.createdAt | date:'MMM d, shortTime' }}</span>
+          </div>
+          <div class="activity-item-detail">
+            <div class="activity-line"></div>
+            <div class="activity-dot"></div>
+            <p class="activity-text">Status set to <strong>{{ task()!.status.name }}</strong></p>
+            <span class="activity-time">{{ task()!.updatedAt | date:'MMM d, shortTime' }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- Status Menu -->
+<mat-menu #statusMenu="matMenu">
+  @for (status of DEFAULT_STATUSES; track status.id) {
+    <button mat-menu-item (click)="setStatus(status.id)">
+      <div class="status-menu-item">
+        <div class="status-color" [style.background]="status.color"></div>
+        <span>{{ status.name }}</span>
+      </div>
+    </button>
+  }
+</mat-menu>
+
+<!-- Priority Menu -->
+<mat-menu #priorityMenu="matMenu">
+  @for (p of priorities; track p) {
+    <button mat-menu-item (click)="setPriority(p)">
+      <div class="priority-menu-item" [style.color]="PRIORITY_CONFIG[p].color">
+        <mat-icon>{{ PRIORITY_CONFIG[p].icon }}</mat-icon>
+        <span>{{ PRIORITY_CONFIG[p].label }}</span>
+      </div>
+    </button>
+  }
+</mat-menu>

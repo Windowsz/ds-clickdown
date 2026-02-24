@@ -1,0 +1,240 @@
+.board-view {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  height: 100%;
+  overflow-x: auto;
+  align-items: flex-start;
+
+  &::-webkit-scrollbar { height: 6px; }
+  &::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 3px; }
+}
+
+.board-column {
+  width: 280px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+// Column header
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 10px;
+}
+
+.col-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.col-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.col-count {
+  font-size: 11px;
+  color: #9E9E9E;
+  background: #F0F0F0;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.col-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.col-action-btn {
+  width: 26px !important;
+  height: 26px !important;
+  line-height: 26px !important;
+  color: #9E9E9E !important;
+
+  mat-icon { font-size: 16px; }
+
+  &:hover { color: #2C2C2C !important; }
+}
+
+// Column tasks
+.col-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  padding: 0 2px 8px;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 2px; }
+}
+
+// Board card
+.board-card {
+  background: white;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #E9EAEC;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+    border-color: #D0CCFF;
+  }
+}
+
+.card-tags {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.card-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.card-name {
+  font-size: 13px;
+  color: #2C2C2C;
+  margin: 0 0 10px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-priority {
+  display: flex;
+  align-items: center;
+  mat-icon { font-size: 14px; width: 14px; height: 14px; }
+}
+
+.card-due {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #9E9E9E;
+
+  mat-icon { font-size: 12px; width: 12px; height: 12px; }
+
+  &.overdue { color: #FF4444; }
+}
+
+.card-subtasks {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #9E9E9E;
+
+  mat-icon { font-size: 12px; width: 12px; height: 12px; }
+}
+
+.card-spacer { flex: 1; }
+
+.card-assignees {
+  display: flex;
+  align-items: center;
+}
+
+.card-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: white;
+  border: 2px solid white;
+  margin-left: -4px;
+
+  &:first-child { margin-left: 0; }
+
+  &.more { background: #E0E0E0; color: #6B6B6B; }
+
+  &.unassigned {
+    background: #F0F0F0;
+    border: 1.5px dashed #D0D0D0;
+    mat-icon { font-size: 12px; width: 12px; height: 12px; color: #BDBDBD; }
+  }
+}
+
+// Add card
+.add-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1.5px dashed #E0E0E0;
+  border-radius: 8px;
+  color: #9E9E9E;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover { border-color: #7B68EE; color: #7B68EE; background: #F8F7FF; }
+}
+
+// Add column
+.add-column { width: 280px; min-width: 280px; }
+
+.add-col-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.7);
+  border: 1.5px dashed #D0D0D0;
+  border-radius: 8px;
+  color: #9E9E9E;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.15s;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover { border-color: #7B68EE; color: #7B68EE; background: white; }
+}
+
+// No list
+.no-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #BDBDBD;
+
+  mat-icon { font-size: 64px; width: 64px; height: 64px; margin-bottom: 16px; }
+  h2 { font-size: 20px; color: #6B6B6B; margin: 0; }
+}

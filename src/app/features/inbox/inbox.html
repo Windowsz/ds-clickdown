@@ -1,0 +1,79 @@
+<div class="inbox-page">
+  <div class="page-header">
+    <div class="page-title">
+      <mat-icon>inbox</mat-icon>
+      <h1>Inbox</h1>
+      @if (ws.unreadCount() > 0) {
+        <span class="unread-badge">{{ ws.unreadCount() }}</span>
+      }
+    </div>
+    <button mat-stroked-button class="mark-all" (click)="ws.markAllNotificationsRead()">
+      <mat-icon>done_all</mat-icon>
+      Mark all as read
+    </button>
+  </div>
+
+  <mat-tab-group class="inbox-tabs" animationDuration="150ms">
+    <mat-tab label="All">
+      <div class="notifications-list">
+        @for (notif of ws.notifications(); track notif.id) {
+          <div class="notif-row" [class.unread]="!notif.read" (click)="ws.markNotificationRead(notif.id)">
+            <div class="notif-avatar" [style.background]="notif.user.color">{{ notif.user.initials }}</div>
+            <div class="notif-body">
+              <div class="notif-header">
+                <span class="notif-type-icon">
+                  @switch (notif.type) {
+                    @case ('mention') { <mat-icon class="type-icon mention">alternate_email</mat-icon> }
+                    @case ('assigned') { <mat-icon class="type-icon assigned">person_add</mat-icon> }
+                    @case ('comment') { <mat-icon class="type-icon comment">chat_bubble</mat-icon> }
+                    @case ('due') { <mat-icon class="type-icon due">alarm</mat-icon> }
+                    @case ('status') { <mat-icon class="type-icon status">change_circle</mat-icon> }
+                  }
+                </span>
+                <span class="notif-title">{{ notif.title }}</span>
+                <span class="notif-time">{{ notif.createdAt | date:'shortTime' }}</span>
+              </div>
+              <p class="notif-message">{{ notif.message }}</p>
+            </div>
+            @if (!notif.read) {
+              <div class="unread-dot"></div>
+            }
+          </div>
+        }
+
+        @if (ws.notifications().length === 0) {
+          <div class="empty-inbox">
+            <mat-icon>notifications_none</mat-icon>
+            <h2>You're all caught up!</h2>
+            <p>No new notifications</p>
+          </div>
+        }
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Unread
+        @if (ws.unreadCount() > 0) {
+          <span class="tab-badge">{{ ws.unreadCount() }}</span>
+        }
+      </ng-template>
+      <div class="notifications-list">
+        @for (notif of ws.notifications(); track notif.id) {
+          @if (!notif.read) {
+            <div class="notif-row unread" (click)="ws.markNotificationRead(notif.id)">
+              <div class="notif-avatar" [style.background]="notif.user.color">{{ notif.user.initials }}</div>
+              <div class="notif-body">
+                <div class="notif-header">
+                  <span class="notif-title">{{ notif.title }}</span>
+                  <span class="notif-time">{{ notif.createdAt | date:'shortTime' }}</span>
+                </div>
+                <p class="notif-message">{{ notif.message }}</p>
+              </div>
+              <div class="unread-dot"></div>
+            </div>
+          }
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

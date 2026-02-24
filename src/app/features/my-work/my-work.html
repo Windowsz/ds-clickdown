@@ -1,0 +1,128 @@
+<div class="my-work-page">
+  <div class="page-header">
+    <div class="page-title">
+      <mat-icon>task_alt</mat-icon>
+      <h1>My Work</h1>
+    </div>
+    <div class="header-stats">
+      <div class="stat-chip overdue-chip">
+        <mat-icon>warning</mat-icon>
+        {{ overdueTasks().length }} overdue
+      </div>
+      <div class="stat-chip today-chip">
+        <mat-icon>today</mat-icon>
+        {{ dueTodayTasks().length }} due today
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="150ms" class="work-tabs">
+    <!-- All My Tasks -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        All Tasks
+        <span class="tab-num">{{ myTasks().length }}</span>
+      </ng-template>
+
+      <div class="task-section">
+        @for (task of myTasks(); track task.id) {
+          <div class="work-task-row" [class.done]="task.status.type === 'done'" (click)="openTask(task.id)">
+            <div class="task-status-dot" [style.background]="task.status.color"></div>
+            <div class="task-main">
+              <span class="task-name">{{ task.name }}</span>
+              <div class="task-chips">
+                <span class="status-chip" [style.background]="task.status.color + '22'" [style.color]="task.status.color">{{ task.status.name }}</span>
+                @for (tag of task.tags.slice(0, 1); track tag.id) {
+                  <span class="tag-chip" [style.background]="tag.color + '22'" [style.color]="tag.color">{{ tag.name }}</span>
+                }
+              </div>
+            </div>
+            <div class="task-right">
+              @if (task.dueDate) {
+                <span class="due-badge" [class.overdue]="isOverdue(task)">
+                  <mat-icon>{{ isOverdue(task) ? 'warning' : 'today' }}</mat-icon>
+                  {{ task.dueDate | date:'MMM d' }}
+                </span>
+              }
+              <div class="priority-icon" [style.color]="PRIORITY_CONFIG[task.priority].color" [matTooltip]="PRIORITY_CONFIG[task.priority].label">
+                <mat-icon>{{ PRIORITY_CONFIG[task.priority].icon }}</mat-icon>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (myTasks().length === 0) {
+          <div class="empty-state">
+            <mat-icon>check_circle_outline</mat-icon>
+            <h2>No tasks assigned to you</h2>
+            <p>Tasks assigned to you will appear here</p>
+          </div>
+        }
+      </div>
+    </mat-tab>
+
+    <!-- Overdue -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Overdue
+        @if (overdueTasks().length > 0) {
+          <span class="tab-num danger">{{ overdueTasks().length }}</span>
+        }
+      </ng-template>
+
+      <div class="task-section">
+        @for (task of overdueTasks(); track task.id) {
+          <div class="work-task-row overdue-row" (click)="openTask(task.id)">
+            <div class="task-status-dot" [style.background]="task.status.color"></div>
+            <div class="task-main">
+              <span class="task-name">{{ task.name }}</span>
+              <span class="overdue-label">Due {{ task.dueDate | date:'MMM d' }}</span>
+            </div>
+            <div class="task-right">
+              <div class="priority-icon" [style.color]="PRIORITY_CONFIG[task.priority].color">
+                <mat-icon>{{ PRIORITY_CONFIG[task.priority].icon }}</mat-icon>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (overdueTasks().length === 0) {
+          <div class="empty-state">
+            <mat-icon>check_circle</mat-icon>
+            <h2>No overdue tasks!</h2>
+            <p>Great job keeping up with your work</p>
+          </div>
+        }
+      </div>
+    </mat-tab>
+
+    <!-- Upcoming -->
+    <mat-tab label="Upcoming">
+      <div class="task-section">
+        @for (task of upcomingTasks(); track task.id) {
+          <div class="work-task-row" (click)="openTask(task.id)">
+            <div class="task-status-dot" [style.background]="task.status.color"></div>
+            <div class="task-main">
+              <span class="task-name">{{ task.name }}</span>
+            </div>
+            <div class="task-right">
+              <span class="due-badge">
+                <mat-icon>today</mat-icon>
+                {{ task.dueDate | date:'MMM d' }}
+              </span>
+            </div>
+          </div>
+        }
+
+        @if (upcomingTasks().length === 0) {
+          <div class="empty-state">
+            <mat-icon>event_available</mat-icon>
+            <h2>Nothing due this week</h2>
+            <p>You're ahead of schedule!</p>
+          </div>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

@@ -1,0 +1,177 @@
+<div class="home-page">
+  <!-- Hero Welcome -->
+  <div class="home-hero">
+    <div class="hero-content">
+      <h1 class="hero-greeting">{{ greeting }}, {{ ws.currentUser().name.split(' ')[0] }} 👋</h1>
+      <p class="hero-sub">Here's your work overview for today</p>
+    </div>
+    <div class="hero-avatar" [style.background]="ws.currentUser().color">
+      {{ ws.currentUser().initials }}
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card overdue" [routerLink]="['/my-work']">
+      <div class="stat-header">
+        <mat-icon>warning_amber</mat-icon>
+        <span>Overdue</span>
+      </div>
+      <div class="stat-number">{{ stats().overdue }}</div>
+      <div class="stat-label">tasks past due date</div>
+    </div>
+
+    <div class="stat-card due-today" [routerLink]="['/my-work']">
+      <div class="stat-header">
+        <mat-icon>today</mat-icon>
+        <span>Due Today</span>
+      </div>
+      <div class="stat-number">{{ stats().dueToday }}</div>
+      <div class="stat-label">tasks due today</div>
+    </div>
+
+    <div class="stat-card in-progress">
+      <div class="stat-header">
+        <mat-icon>pending</mat-icon>
+        <span>In Progress</span>
+      </div>
+      <div class="stat-number">{{ stats().inProgress }}</div>
+      <div class="stat-label">tasks being worked on</div>
+    </div>
+
+    <div class="stat-card completed">
+      <div class="stat-header">
+        <mat-icon>check_circle</mat-icon>
+        <span>Completed</span>
+      </div>
+      <div class="stat-number">{{ stats().done }}</div>
+      <div class="stat-label">of {{ stats().total }} total tasks</div>
+      <mat-progress-bar mode="determinate" [value]="stats().completion" class="stat-progress"></mat-progress-bar>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="home-grid">
+    <!-- My Tasks -->
+    <div class="home-card">
+      <div class="card-header">
+        <div class="card-title">
+          <mat-icon>task_alt</mat-icon>
+          <h2>My Tasks</h2>
+          <span class="card-count">{{ myTasks().length }}</span>
+        </div>
+        <a routerLink="/my-work" class="card-link">View all</a>
+      </div>
+
+      @if (myTasks().length === 0) {
+        <div class="empty-state">
+          <mat-icon>check_circle_outline</mat-icon>
+          <p>No tasks assigned to you!</p>
+        </div>
+      } @else {
+        <div class="task-list">
+          @for (task of myTasks().slice(0, 6); track task.id) {
+            <div class="task-row-home" (click)="openTask(task.id)">
+              <div class="task-status-dot" [style.background]="task.status.color"></div>
+              <span class="task-name-home">{{ task.name }}</span>
+              <div class="task-meta">
+                @if (task.dueDate) {
+                  <span class="task-due" [class.overdue]="task.dueDate < todayDate">
+                    {{ task.dueDate | date:'MMM d' }}
+                  </span>
+                }
+                <span class="priority-dot" [style.background]="PRIORITY_CONFIG[task.priority].color" [matTooltip]="PRIORITY_CONFIG[task.priority].label"></span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="home-card">
+      <div class="card-header">
+        <div class="card-title">
+          <mat-icon>history</mat-icon>
+          <h2>Recent Activity</h2>
+        </div>
+      </div>
+
+      <div class="activity-list">
+        @for (notif of ws.notifications(); track notif.id) {
+          <div class="activity-item" [class.unread]="!notif.read">
+            <div class="activity-avatar" [style.background]="notif.user.color">{{ notif.user.initials }}</div>
+            <div class="activity-content">
+              <p class="activity-message">{{ notif.message }}</p>
+              <span class="activity-time">{{ notif.createdAt | date:'shortTime' }}</span>
+            </div>
+            @if (!notif.read) {
+              <div class="unread-dot"></div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Spaces Overview -->
+    <div class="home-card spaces-card">
+      <div class="card-header">
+        <div class="card-title">
+          <mat-icon>rocket_launch</mat-icon>
+          <h2>Spaces</h2>
+        </div>
+        <button mat-button class="card-link">
+          <mat-icon>add</mat-icon>
+          New Space
+        </button>
+      </div>
+
+      <div class="spaces-list">
+        @for (space of ws.spaces(); track space.id) {
+          <div class="space-card" (click)="ws.setActiveSpace(space.id)" [routerLink]="['/home']">
+            <div class="space-card-icon" [style.background]="space.color">
+              <mat-icon>{{ space.icon || 'circle' }}</mat-icon>
+            </div>
+            <div class="space-card-info">
+              <span class="space-card-name">{{ space.name }}</span>
+              <span class="space-card-count">{{ space.members.length }} members</span>
+            </div>
+            <div class="space-card-tasks">
+              <span class="space-task-count">{{ space.lists.length + space.folders.length }} lists</span>
+            </div>
+            <mat-icon class="space-card-chevron">chevron_right</mat-icon>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Overdue Tasks -->
+    @if (overdueTasks().length > 0) {
+      <div class="home-card overdue-card">
+        <div class="card-header">
+          <div class="card-title overdue-title">
+            <mat-icon>warning</mat-icon>
+            <h2>Overdue</h2>
+            <span class="card-count danger">{{ overdueTasks().length }}</span>
+          </div>
+        </div>
+
+        <div class="task-list">
+          @for (task of overdueTasks().slice(0, 5); track task.id) {
+            <div class="task-row-home overdue-row" (click)="openTask(task.id)">
+              <div class="task-status-dot" [style.background]="task.status.color"></div>
+              <span class="task-name-home">{{ task.name }}</span>
+              <div class="task-meta">
+                <span class="task-due overdue">{{ task.dueDate | date:'MMM d' }}</span>
+                @for (assignee of task.assignees.slice(0, 2); track assignee.id) {
+                  <div class="mini-avatar" [style.background]="assignee.color" [matTooltip]="assignee.name">{{ assignee.initials }}</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
