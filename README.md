@@ -1,59 +1,73 @@
-# DsClickdown
+# ClickDown — Project Management
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.21.
+A ClickUp-inspired project management app built with **Angular 21**, **Angular Material**, and **Tailwind CSS**.
 
-## Development server
+## 🚀 Live Demo
 
-To start a local development server, run:
+**[https://windowsz.github.io/ds-clickdown/](https://windowsz.github.io/ds-clickdown/)**
 
-```bash
-ng serve
-```
+[![Deploy to GitHub Pages](https://github.com/Windowsz/ds-clickdown/actions/workflows/deploy.yml/badge.svg)](https://github.com/Windowsz/ds-clickdown/actions/workflows/deploy.yml)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Dark sidebar** — workspace switcher, collapsible spaces / folders / lists tree
+- **Home dashboard** — greeting, stats cards, my tasks, activity feed
+- **List view** — tasks grouped by status with columns (assignee, due date, priority, tags)
+- **Board / Kanban view** — drag-ready status columns with task cards
+- **Calendar view** — monthly navigation with tasks plotted on due dates
+- **Task detail panel** — slide-in panel with subtasks, comments & activity tabs
+- **Inbox** — all / unread notifications
+- **My Work** — all / overdue / upcoming task tabs
 
-```bash
-ng generate component component-name
-```
+## 🛠 Tech Stack
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Layer | Technology |
+|---|---|
+| Framework | Angular 21 (standalone components, signals) |
+| UI Components | Angular Material v21 |
+| Styling | Tailwind CSS v3 + SCSS |
+| State | Angular Signals (`signal`, `computed`) |
+| Routing | Angular Router (lazy-loaded) |
+| CI / CD | GitHub Actions → GitHub Pages |
 
-```bash
-ng generate --help
-```
+---
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 💻 Local Development
 
 ```bash
-ng test
+npm install
+npx ng serve
 ```
 
-## Running end-to-end tests
+Then open **http://localhost:4200/**
 
-For end-to-end (e2e) testing, run:
+## 🏗 Production Build
 
 ```bash
-ng e2e
+npx ng build --configuration production
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Output is placed in `dist/ds-clickdown-v21/browser/`.
 
-## Additional Resources
+## 📁 Project Structure
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
+src/app/
+├── core/
+│   ├── models/          # Task, Space, User interfaces
+│   └── services/        # WorkspaceService (signals-based state)
+├── layout/
+│   ├── sidebar/         # Dark nav sidebar
+│   └── header/          # Top bar with view switcher
+└── features/
+    ├── home/            # Dashboard page
+    ├── inbox/           # Notifications
+    ├── my-work/         # Personal task tracker
+    └── space/
+        ├── list-view/   # Task list grouped by status
+        ├── board-view/  # Kanban board
+        ├── calendar-view/
+        └── task-detail/ # Slide-in task panel
+```
