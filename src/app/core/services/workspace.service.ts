@@ -243,7 +243,7 @@ export class WorkspaceService {
   readonly activeView = signal<'list' | 'board' | 'calendar' | 'gantt' | 'table'>('list');
   readonly selectedTaskId = signal<string | null>(null);
   readonly sidebarCollapsed = signal<boolean>(false);
-  readonly taskDetailOpen = signal<boolean>(false);
+  readonly taskDetailOpen = computed(() => this.selectedTaskId() !== null);
 
   readonly notifications = signal<Notification[]>([
     {
@@ -426,7 +426,6 @@ export class WorkspaceService {
 
   selectTask(taskId: string | null): void {
     this.selectedTaskId.set(taskId);
-    this.taskDetailOpen.set(taskId !== null);
   }
 
   toggleSidebar(): void {

@@ -3,13 +3,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { WorkspaceService } from '../../../core/services/workspace.service';
 import { Task, PRIORITY_CONFIG, DEFAULT_STATUSES } from '../../../core/models/task.model';
 
 @Component({
   selector: 'app-board-view',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule, DatePipe, NgClass],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule, DatePipe],
   templateUrl: './board-view.html',
   styleUrl: './board-view.scss',
 })

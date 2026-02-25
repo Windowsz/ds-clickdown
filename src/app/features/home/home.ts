@@ -5,13 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { WorkspaceService } from '../../core/services/workspace.service';
 import { PRIORITY_CONFIG } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, MatIconModule, MatButtonModule, MatMenuModule, MatProgressBarModule, MatTooltipModule, DatePipe, NgClass],
+  imports: [RouterLink, MatIconModule, MatButtonModule, MatMenuModule, MatProgressBarModule, MatTooltipModule, DatePipe],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

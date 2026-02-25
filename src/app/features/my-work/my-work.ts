@@ -5,7 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DatePipe } from '@angular/common';
 import { WorkspaceService } from '../../core/services/workspace.service';
-import { PRIORITY_CONFIG } from '../../core/models/task.model';
+import { Task, PRIORITY_CONFIG } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-my-work',
@@ -34,7 +34,7 @@ export class MyWorkComponent {
     this.ws.selectTask(taskId);
   }
 
-  protected isOverdue(task: any): boolean {
+  protected isOverdue(task: Task): boolean {
     return !!task.dueDate && task.dueDate < this.today && task.status.type !== 'done' && task.status.type !== 'closed';
   }
 }
