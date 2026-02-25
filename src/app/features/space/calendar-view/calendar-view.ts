@@ -2,7 +2,6 @@ import { Component, inject, computed, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatePipe } from '@angular/common';
 import { WorkspaceService } from '../../../core/services/workspace.service';
 import { Task } from '../../../core/models/task.model';
 
@@ -15,7 +14,7 @@ interface CalendarDay {
 
 @Component({
   selector: 'app-calendar-view',
-  imports: [MatIconModule, MatButtonModule, MatTooltipModule, DatePipe],
+  imports: [MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.scss',
 })
@@ -88,7 +87,7 @@ export class CalendarViewComponent {
     this.currentDate.set(new Date(d.getFullYear(), d.getMonth() + 1, 1));
   }
 
-  protected today(): void {
+  protected goToToday(): void {
     this.currentDate.set(new Date());
   }
 

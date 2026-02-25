@@ -6,13 +6,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { WorkspaceService } from '../../../core/services/workspace.service';
 import { Task, PRIORITY_CONFIG, DEFAULT_STATUSES } from '../../../core/models/task.model';
 
 @Component({
   selector: 'app-list-view',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule, MatTooltipModule, MatInputModule, DatePipe, NgClass],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule, MatTooltipModule, MatInputModule, DatePipe],
   templateUrl: './list-view.html',
   styleUrl: './list-view.scss',
 })

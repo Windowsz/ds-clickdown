@@ -9,38 +9,20 @@ import { TaskDetailComponent } from './task-detail/task-detail';
 
 @Component({
   selector: 'app-space',
-  imports: [MatIconModule, ListViewComponent, BoardViewComponent, CalendarViewComponent, TaskDetailComponent],
+  imports: [MatIconModule, ListViewComponent, BoardViewComponent, CalendarViewComponent],
   template: `
     <div class="space-container">
-      <div class="view-area">
-        @switch (ws.activeView()) {
-          @case ('board') { <app-board-view /> }
-          @case ('calendar') { <app-calendar-view /> }
-          @default { <app-list-view /> }
-        }
-      </div>
-      @if (ws.taskDetailOpen()) {
-        <app-task-detail class="task-detail-slide" />
+      @switch (ws.activeView()) {
+        @case ('board') { <app-board-view /> }
+        @case ('calendar') { <app-calendar-view /> }
+        @default { <app-list-view /> }
       }
     </div>
   `,
   styles: [`
     .space-container {
-      display: flex;
       height: 100%;
-      overflow: hidden;
-    }
-    .view-area {
-      flex: 1;
       overflow: auto;
-      min-width: 0;
-    }
-    .task-detail-slide {
-      animation: slideIn 0.25s ease-out;
-    }
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
     }
   `],
 })

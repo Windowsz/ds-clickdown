@@ -6,12 +6,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { WorkspaceService } from '../../core/services/workspace.service';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive, MatIconModule, MatTooltipModule, MatMenuModule, MatButtonModule, MatBadgeModule, MatDividerModule, NgClass, TitleCasePipe],
+  imports: [RouterLink, RouterLinkActive, MatIconModule, MatTooltipModule, MatMenuModule, MatButtonModule, MatBadgeModule, MatDividerModule, TitleCasePipe],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
