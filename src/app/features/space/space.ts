@@ -5,6 +5,7 @@ import { WorkspaceService } from '../../core/services/workspace.service';
 import { ListViewComponent } from './list-view/list-view';
 import { BoardViewComponent } from './board-view/board-view';
 import { CalendarViewComponent } from './calendar-view/calendar-view';
+import { TaskDetailComponent } from './task-detail/task-detail';
 
 @Component({
   selector: 'app-space',
