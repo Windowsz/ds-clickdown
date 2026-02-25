@@ -6,7 +6,6 @@ import { ListViewComponent } from './list-view/list-view';
 import { BoardViewComponent } from './board-view/board-view';
 import { CalendarViewComponent } from './calendar-view/calendar-view';
 import { TaskDetailComponent } from './task-detail/task-detail';
-import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-space',
@@ -50,13 +49,6 @@ export class SpaceComponent {
   private readonly route = inject(ActivatedRoute);
 
   constructor() {
-    effect(() => {
-      const spaceId = this.route.snapshot.paramMap.get('spaceId');
-      const listId = this.route.snapshot.paramMap.get('listId');
-      if (spaceId) this.ws.setActiveSpace(spaceId);
-      if (listId) this.ws.setActiveList(listId);
-    });
-
     this.route.paramMap.subscribe(params => {
       const spaceId = params.get('spaceId');
       const listId = params.get('listId');
