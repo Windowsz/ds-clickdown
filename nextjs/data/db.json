@@ -1,0 +1,316 @@
+{
+  "currentUserId": "user-1",
+  "users": [
+    { "id": "user-1", "name": "Alex Johnson", "email": "alex@company.com",   "color": "#7B68EE", "initials": "AJ", "role": "owner",  "online": true  },
+    { "id": "user-2", "name": "Sarah Chen",   "email": "sarah@company.com",  "color": "#FF69B4", "initials": "SC", "role": "admin",  "online": true  },
+    { "id": "user-3", "name": "Marcus Williams","email":"marcus@company.com","color": "#00CC66", "initials": "MW", "role": "member", "online": false },
+    { "id": "user-4", "name": "Priya Patel",  "email": "priya@company.com",  "color": "#FF8C00", "initials": "PP", "role": "member", "online": true  },
+    { "id": "user-5", "name": "Tom Russo",    "email": "tom@company.com",    "color": "#0099FF", "initials": "TR", "role": "member", "online": false }
+  ],
+  "notifications": [
+    {
+      "id": "n-1", "type": "mention",
+      "title": "Mentioned in a comment",
+      "message": "Sarah Chen mentioned you in \"Design new landing page hero section\"",
+      "userId": "user-2", "createdAt": "2026-03-11T09:50:00.000Z", "read": false
+    },
+    {
+      "id": "n-2", "type": "assigned",
+      "title": "Task assigned to you",
+      "message": "You were assigned \"Accessibility audit and fixes\"",
+      "userId": "user-2", "createdAt": "2026-03-11T09:30:00.000Z", "read": false
+    },
+    {
+      "id": "n-3", "type": "due",
+      "title": "Task due soon",
+      "message": "\"Implement authentication flow\" is due tomorrow",
+      "userId": "user-1", "createdAt": "2026-03-11T09:00:00.000Z", "read": true
+    },
+    {
+      "id": "n-4", "type": "status",
+      "title": "Status changed",
+      "message": "Marcus Williams changed \"Database query optimization\" to Done",
+      "userId": "user-3", "createdAt": "2026-03-11T08:00:00.000Z", "read": true
+    }
+  ],
+  "workspace": {
+    "id": "ws-1",
+    "name": "My Company",
+    "color": "#7B68EE",
+    "plan": "business",
+    "members": ["user-1","user-2","user-3","user-4","user-5"],
+    "spaces": [
+      {
+        "id": "sp-1", "name": "Product Development", "color": "#7B68EE", "icon": "rocket",
+        "members": ["user-1","user-2","user-3","user-4","user-5"],
+        "order": 0, "collapsed": false,
+        "lists": [],
+        "folders": [
+          {
+            "id": "folder-1", "name": "Web App", "color": "#0099FF", "spaceId": "sp-1",
+            "order": 0, "collapsed": false,
+            "lists": [
+              {
+                "id": "list-1", "name": "Design", "color": "#FF69B4", "icon": "palette",
+                "spaceId": "sp-1", "folderId": "folder-1", "order": 0,
+                "statuses": [
+                  { "id": "s-1", "name": "TO DO",       "color": "#9E9E9E", "type": "todo",        "order": 0 },
+                  { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                  { "id": "s-3", "name": "IN REVIEW",   "color": "#FF8C00", "type": "review",      "order": 2 },
+                  { "id": "s-4", "name": "DONE",        "color": "#00CC66", "type": "done",        "order": 3 },
+                  { "id": "s-5", "name": "CLOSED",      "color": "#FF4444", "type": "closed",      "order": 4 }
+                ],
+                "tasks": [
+                  {
+                    "id": "t-1", "name": "Design new landing page hero section", "listId": "list-1",
+                    "status": { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                    "priority": "high",
+                    "assignees": ["user-2"],
+                    "dueDate": "2026-03-13T00:00:00.000Z",
+                    "description": "Redesign the hero section with new brand guidelines. Include CTA buttons and gradient background.",
+                    "tags": [{ "id": "tag-1", "name": "Design", "color": "#FF69B4" }],
+                    "subtasks": [
+                      { "id": "st-1", "name": "Create wireframes",    "completed": true  },
+                      { "id": "st-2", "name": "Get design approval",  "completed": false },
+                      { "id": "st-3", "name": "Implement in Figma",   "completed": false }
+                    ],
+                    "comments": [
+                      { "id": "c-1", "text": "Looking great so far! Can we try a darker gradient?", "author": "user-1", "createdAt": "2026-03-11T09:00:00.000Z" }
+                    ],
+                    "attachments": [], "order": 0,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-2", "name": "Update component library tokens", "listId": "list-1",
+                    "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                    "priority": "normal",
+                    "assignees": ["user-2","user-4"],
+                    "tags": [
+                      { "id": "tag-1", "name": "Design", "color": "#FF69B4" },
+                      { "id": "tag-2", "name": "System", "color": "#7B68EE" }
+                    ],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 1,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-3", "name": "Mobile app icon variants", "listId": "list-1",
+                    "status": { "id": "s-4", "name": "DONE", "color": "#00CC66", "type": "done", "order": 3 },
+                    "priority": "low",
+                    "assignees": ["user-2"],
+                    "dueDate": "2026-03-10T00:00:00.000Z",
+                    "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 2,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-4", "name": "Dark mode design system", "listId": "list-1",
+                    "status": { "id": "s-3", "name": "IN REVIEW", "color": "#FF8C00", "type": "review", "order": 2 },
+                    "priority": "high",
+                    "assignees": ["user-1","user-2"],
+                    "tags": [{ "id": "tag-1", "name": "Design", "color": "#FF69B4" }],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 3,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  }
+                ]
+              },
+              {
+                "id": "list-2", "name": "Frontend", "color": "#0099FF", "icon": "code",
+                "spaceId": "sp-1", "folderId": "folder-1", "order": 1,
+                "statuses": [
+                  { "id": "s-1", "name": "TO DO",       "color": "#9E9E9E", "type": "todo",        "order": 0 },
+                  { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                  { "id": "s-3", "name": "IN REVIEW",   "color": "#FF8C00", "type": "review",      "order": 2 },
+                  { "id": "s-4", "name": "DONE",        "color": "#00CC66", "type": "done",        "order": 3 },
+                  { "id": "s-5", "name": "CLOSED",      "color": "#FF4444", "type": "closed",      "order": 4 }
+                ],
+                "tasks": [
+                  {
+                    "id": "t-10", "name": "Implement authentication flow", "listId": "list-2",
+                    "status": { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                    "priority": "urgent",
+                    "assignees": ["user-1"],
+                    "dueDate": "2026-03-12T00:00:00.000Z",
+                    "description": "Implement OAuth2 login with Google and GitHub. Handle token refresh and session management.",
+                    "tags": [
+                      { "id": "tag-3", "name": "Frontend", "color": "#0099FF" },
+                      { "id": "tag-4", "name": "Auth",     "color": "#FF4444" }
+                    ],
+                    "subtasks": [
+                      { "id": "st-10", "name": "Setup OAuth providers",  "completed": true  },
+                      { "id": "st-11", "name": "Handle token refresh",   "completed": true  },
+                      { "id": "st-12", "name": "Session persistence",    "completed": false },
+                      { "id": "st-13", "name": "E2E tests",              "completed": false }
+                    ],
+                    "comments": [], "attachments": [], "order": 0,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-11", "name": "Dashboard analytics charts", "listId": "list-2",
+                    "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                    "priority": "normal",
+                    "assignees": ["user-3"],
+                    "dueDate": "2026-03-16T00:00:00.000Z",
+                    "tags": [{ "id": "tag-3", "name": "Frontend", "color": "#0099FF" }],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 1,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-12", "name": "Real-time notifications system", "listId": "list-2",
+                    "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                    "priority": "high",
+                    "assignees": ["user-1","user-3"],
+                    "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 2,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-13", "name": "Performance optimization - lazy loading", "listId": "list-2",
+                    "status": { "id": "s-3", "name": "IN REVIEW", "color": "#FF8C00", "type": "review", "order": 2 },
+                    "priority": "normal",
+                    "assignees": ["user-5"],
+                    "tags": [{ "id": "tag-5", "name": "Performance", "color": "#00CC66" }],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 3,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-14", "name": "Accessibility audit and fixes", "listId": "list-2",
+                    "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                    "priority": "high",
+                    "assignees": ["user-1"],
+                    "tags": [{ "id": "tag-6", "name": "a11y", "color": "#7B68EE" }],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 4,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  }
+                ]
+              },
+              {
+                "id": "list-3", "name": "Backend", "color": "#FF8C00", "icon": "database",
+                "spaceId": "sp-1", "folderId": "folder-1", "order": 2,
+                "statuses": [
+                  { "id": "s-1", "name": "TO DO",       "color": "#9E9E9E", "type": "todo",        "order": 0 },
+                  { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                  { "id": "s-3", "name": "IN REVIEW",   "color": "#FF8C00", "type": "review",      "order": 2 },
+                  { "id": "s-4", "name": "DONE",        "color": "#00CC66", "type": "done",        "order": 3 },
+                  { "id": "s-5", "name": "CLOSED",      "color": "#FF4444", "type": "closed",      "order": 4 }
+                ],
+                "tasks": [
+                  {
+                    "id": "t-20", "name": "API rate limiting implementation", "listId": "list-3",
+                    "status": { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                    "priority": "high",
+                    "assignees": ["user-3"],
+                    "dueDate": "2026-03-14T00:00:00.000Z",
+                    "tags": [
+                      { "id": "tag-7", "name": "Backend",  "color": "#FF8C00" },
+                      { "id": "tag-8", "name": "Security", "color": "#FF4444" }
+                    ],
+                    "subtasks": [], "comments": [], "attachments": [], "order": 0,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-21", "name": "Database query optimization", "listId": "list-3",
+                    "status": { "id": "s-4", "name": "DONE", "color": "#00CC66", "type": "done", "order": 3 },
+                    "priority": "urgent",
+                    "assignees": ["user-3","user-5"],
+                    "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 1,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  },
+                  {
+                    "id": "t-22", "name": "Implement webhook system", "listId": "list-3",
+                    "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                    "priority": "normal",
+                    "assignees": ["user-5"],
+                    "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 2,
+                    "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sp-2", "name": "Marketing", "color": "#FF69B4", "icon": "megaphone",
+        "members": ["user-1","user-4"],
+        "order": 1, "collapsed": false,
+        "folders": [],
+        "lists": [
+          {
+            "id": "list-4", "name": "Campaigns", "color": "#FF69B4", "icon": "mail",
+            "spaceId": "sp-2", "order": 0,
+            "statuses": [
+              { "id": "s-1", "name": "TO DO",       "color": "#9E9E9E", "type": "todo",        "order": 0 },
+              { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+              { "id": "s-3", "name": "IN REVIEW",   "color": "#FF8C00", "type": "review",      "order": 2 },
+              { "id": "s-4", "name": "DONE",        "color": "#00CC66", "type": "done",        "order": 3 },
+              { "id": "s-5", "name": "CLOSED",      "color": "#FF4444", "type": "closed",      "order": 4 }
+            ],
+            "tasks": [
+              {
+                "id": "t-30", "name": "Q1 email campaign setup", "listId": "list-4",
+                "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                "priority": "high",
+                "assignees": ["user-4"],
+                "dueDate": "2026-03-18T00:00:00.000Z",
+                "tags": [{ "id": "tag-9", "name": "Marketing", "color": "#FF69B4" }],
+                "subtasks": [], "comments": [], "attachments": [], "order": 0,
+                "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+              },
+              {
+                "id": "t-31", "name": "Blog post: Product roadmap 2026", "listId": "list-4",
+                "status": { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+                "priority": "normal",
+                "assignees": ["user-4"],
+                "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 1,
+                "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+              },
+              {
+                "id": "t-32", "name": "Social media content calendar", "listId": "list-4",
+                "status": { "id": "s-3", "name": "IN REVIEW", "color": "#FF8C00", "type": "review", "order": 2 },
+                "priority": "low",
+                "assignees": ["user-4","user-2"],
+                "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 2,
+                "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sp-3", "name": "Operations", "color": "#00CC66", "icon": "settings",
+        "members": ["user-1","user-2","user-3","user-4","user-5"],
+        "order": 2, "collapsed": true,
+        "folders": [],
+        "lists": [
+          {
+            "id": "list-5", "name": "General", "color": "#00CC66",
+            "spaceId": "sp-3", "order": 0,
+            "statuses": [
+              { "id": "s-1", "name": "TO DO",       "color": "#9E9E9E", "type": "todo",        "order": 0 },
+              { "id": "s-2", "name": "IN PROGRESS", "color": "#7B68EE", "type": "in-progress", "order": 1 },
+              { "id": "s-3", "name": "IN REVIEW",   "color": "#FF8C00", "type": "review",      "order": 2 },
+              { "id": "s-4", "name": "DONE",        "color": "#00CC66", "type": "done",        "order": 3 },
+              { "id": "s-5", "name": "CLOSED",      "color": "#FF4444", "type": "closed",      "order": 4 }
+            ],
+            "tasks": [
+              {
+                "id": "t-40", "name": "Onboard new team members", "listId": "list-5",
+                "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                "priority": "high",
+                "assignees": ["user-1"],
+                "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 0,
+                "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+              },
+              {
+                "id": "t-41", "name": "Update company handbook", "listId": "list-5",
+                "status": { "id": "s-1", "name": "TO DO", "color": "#9E9E9E", "type": "todo", "order": 0 },
+                "priority": "low",
+                "assignees": ["user-1"],
+                "tags": [], "subtasks": [], "comments": [], "attachments": [], "order": 1,
+                "createdAt": "2026-03-01T00:00:00.000Z", "updatedAt": "2026-03-11T00:00:00.000Z"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
